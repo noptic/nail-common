@@ -31,4 +31,4 @@ Modules
  - [injector] enforces a property injection constructor
  - [methods] adds methods to a class
  - [parent] inherit from another class (uses prototype chaining)
- - [ptoperties] adds properties to a class
+ - [properties] adds properties to a class
