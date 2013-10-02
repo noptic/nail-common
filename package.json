@@ -1,0 +1,37 @@
+{
+  "name": "nail-common",
+  "version": "0.1.0alpha1",
+  "description": "Common nail modules",
+  "main": "lib/module.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/noptic/nail-common.git"
+  },
+  "keywords": [
+    "nail",
+    "modules"
+  ],
+  "author": "Oliver Anan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noptic/nail-common/issues"
+  },
+  "devDependencies": {
+    "grunt-contrib-coffee": "0.7.0",
+    "grunt": "0.4.1",
+    "grunt-simple-mocha": "~0.4.0",
+    "mocha": "~1.12.0",
+    "should": "~1.2.2",
+    "grunt-istanbul-coverage": "0.0.1",
+    "grunt-istanbul": "~0.2.3",
+    "nail-core": "0.1.0-beta3",
+    "glob": "~3.2.6",
+    "nail-core": "0.1.0-beta3"
+  },
+  "dependencies": {
+    "underscore": "~1.5.1"
+  }
+}
