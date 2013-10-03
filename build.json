@@ -12,7 +12,8 @@
       "methods",
       "injector",
       "parent",
-      "init"
+      "init",
+      "accessor"
     ]
   },
   "extension":{

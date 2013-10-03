@@ -12,7 +12,10 @@ nail = nailCore.use(common.init);
 
 describe('init', function() {
   it('is an Object', function() {
-    return (_.isObject(common.init)).should.be.ok;
+    return _.isObject(common.init).should.be.ok;
+  });
+  it('implements "augment"', function() {
+    return _.isFunction(common.init.augment).should.be.ok;
   });
   it('does not crash without a constructor', function() {
     var kira, lib;

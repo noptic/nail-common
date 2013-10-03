@@ -11,6 +11,7 @@
 [underscore]: http://underscorejs.org
 
 [About]: About.coffee.md
+[accessor]: accessor.coffee.md
 [init]: init.coffee.md
 [injector]: injector.coffee.md
 [methods]: methods.coffee.md

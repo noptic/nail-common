@@ -11,6 +11,7 @@
 [underscore]: http://underscorejs.org
 
 [About]: About.coffee.md
+[accessor]: accessor.coffee.md
 [init]: init.coffee.md
 [injector]: injector.coffee.md
 [methods]: methods.coffee.md
@@ -36,12 +37,15 @@ Description
 
     describe 'init', ->
       it 'is an Object', ->
-        (_.isObject common.init).should.be.ok
+        _.isObject(common.init).should.be.ok
           
+      it 'implements "augment"', ->
+        _.isFunction(common.init.augment).should.be.ok
+      
       it 'does not crash without a constructor', ->
         lib = nail.to Person: {}
         kira = new lib.Person
-        
+      
       it 'binds the constructor to the "init" method', ->
         lib = nail.to Person: {}
         lib.Person::init = (name) -> @name = name
