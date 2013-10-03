@@ -34,6 +34,7 @@ Modules
  - [methods] adds methods to a class
  - [parent] inherit from another class (uses prototype chaining)
  - [properties] adds properties to a class
+ - [accessor] adds encapsulated properties and a accessor method for each property
 
 
 ##Setup
