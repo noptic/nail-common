@@ -14,13 +14,14 @@
 [nail]: https://github.com/noptic/nail
 [npm]: https://github.com/noptic/nail
 
-[About]: spec/About.coffee.md
-[accessor]: spec/accessor.coffee.md
-[init]: spec/init.coffee.md
-[injector]: spec/injector.coffee.md
-[methods]: spec/methods.coffee.md
-[parent]: spec/parent.coffee.md
-[properties]: spec/properties.coffee.md
+[About]: spec\About.coffee.md
+[accessor]: spec\accessor.coffee.md
+[fields]: spec\fields.coffee.md
+[init]: spec\init.coffee.md
+[injector]: spec\injector.coffee.md
+[methods]: spec\methods.coffee.md
+[parent]: spec\parent.coffee.md
+[properties]: spec\properties.coffee.md
 
 nail-common
 ===========

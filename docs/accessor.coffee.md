@@ -12,6 +12,7 @@
 
 [About]: About.coffee.md
 [accessor]: accessor.coffee.md
+[fields]: fields.coffee.md
 [init]: init.coffee.md
 [injector]: injector.coffee.md
 [methods]: methods.coffee.md

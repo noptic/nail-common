@@ -8,6 +8,7 @@
   "build": {
     "sourceFiles": [],
     "components": [
+      "fields",
       "properties",
       "methods",
       "injector",
@@ -16,7 +17,7 @@
       "accessor"
     ]
   },
-  "extension":{
+  "extension": {
     "spec": ".coffee.md"
   },
   "coverage": {

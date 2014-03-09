@@ -183,19 +183,19 @@
     <h1>Code coverage report for <span class="entity">lib/module.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">100% <small>(70 / 70)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(78 / 78)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">100% <small>(15 / 15)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(19 / 19)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Functions: <span class="metric">100% <small>(17 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">100% <small>(70 / 70)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(78 / 78)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
-    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">lib/</a> &#187; module.js</div>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">lib\</a> &#187; module.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
@@ -336,29 +336,65 @@
 135
 136
 137
-138</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5</span>
-<span class="cline-any cline-yes">5</span>
-<span class="cline-any cline-yes">5</span>
-<span class="cline-any cline-yes">5</span>
-<span class="cline-any cline-yes">5</span>
-<span class="cline-any cline-yes">5</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">10</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3</span>
-<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -473,29 +509,47 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">module.exports.properties = {
-  aspect: 'properties',
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">module.exports.fields = {
+  aspect: 'fields',
   augment: function(newClass) {
-    var name, properties, value, _ref, _results;
-    properties = (_ref = newClass.definition[this.aspect]) != null ? _ref : {};
-    newClass.prototype['GEN:get'] = this.genGet;
-    newClass.prototype['GEN:set'] = this.genSet;
+    var fields, name, value, _ref, _results;
+    fields = (_ref = newClass.definition[this.aspect]) != null ? _ref : {};
     _results = [];
-    for (name in properties) {
-      value = properties[name];
+    for (name in fields) {
+      value = fields[name];
       _results.push(this.addProperty(newClass, name, value));
     }
     return _results;
   },
   addProperty: function(target, name, value) {
     return target.prototype[name] = value;
+  }
+};
+&nbsp;
+var _;
+&nbsp;
+_ = require('underscore');
+&nbsp;
+module.exports.properties = {
+  aspect: 'properties',
+  augment: function(newClass) {
+    var definition, name, properties, _ref, _results;
+    properties = (_ref = newClass.definition[this.aspect]) != null ? _ref : {};
+    _results = [];
+    for (name in properties) {
+      definition = properties[name];
+      _results.push(this.addProperty(newClass, name, definition));
+    }
+    return _results;
   },
-  genGet: function(name) {
-    return this[name];
-  },
-  genSet: function(name, value) {
-    this[name] = value;
-    return this;
+  addProperty: function(target, name, definition) {
+    Object.defineProperty(target.prototype, name, {
+      get: definition.get,
+      set: definition.set
+    });
+    if (!_.isUndefined(definition.is)) {
+      return target.prototype[name] = definition.is;
+    }
   }
 };
 &nbsp;
@@ -524,7 +578,7 @@ module.exports.injector = {
     var name, value;
     for (name in properties) {
       value = properties[name];
-      this['GEN:set'](name, value);
+      this[name] = value;
     }
     return this;
   }
@@ -615,7 +669,7 @@ module.exports.accessor = {
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 03 2013 18:09:23 GMT-0400 (EDT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 09 2014 04:08:08 GMT+0100 (Mitteleuropäische Zeit)</div>
 </div>
 
 <script src="../prettify.js"></script>

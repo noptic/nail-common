@@ -10,7 +10,7 @@ _ = require('underscore');
 
 they = it;
 
-nail = nailCore.use(common.properties, common.injector);
+nail = nailCore.use(common.fields, common.properties, common.injector);
 
 describe('injector', function() {
   it('is an Object', function() {
@@ -20,14 +20,35 @@ describe('injector', function() {
     var dean, lib;
     lib = nail.to({
       Person: {
-        name: 'anon',
-        email: null
+        fields: {
+          _name: 'anon',
+          _email: null
+        },
+        properties: {
+          email: {
+            get: function() {
+              return this._email;
+            },
+            set: function(value) {
+              return this._email = value;
+            }
+          },
+          name: {
+            get: function() {
+              return this._name;
+            },
+            set: function(value) {
+              return this._name = value;
+            }
+          }
+        }
       }
     });
     dean = new lib.Person({
       name: 'Dean',
       email: 'dean@example.com'
     });
+    console.log(dean);
     dean.name.should.equal('Dean');
     return dean.email.should.equal('dean@example.com');
   });

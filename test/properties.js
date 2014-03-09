@@ -1,10 +1,12 @@
-var nailCore, properties, should, they, _;
+var fields, nailCore, properties, should, they, _;
 
 should = require('should');
 
 nailCore = require('nail-core');
 
 properties = require('../coverage/instrument/lib/module.js').properties;
+
+fields = require('../coverage/instrument/lib/module.js').fields;
 
 _ = require('underscore');
 
@@ -34,44 +36,117 @@ describe('properties', function() {
     Person = function() {};
     Person.definition = {
       properties: {
-        name: 'anon'
+        name: {
+          get: function() {
+            return this._name;
+          },
+          set: function(newValue) {
+            return this._name = newValue;
+          }
+        }
       }
     };
     properties.augment(Person);
     x = new Person;
-    return x.name.should.equal('anon');
+    x.name = 'sam';
+    return x.name.should.equal('sam');
   });
   it('can be used as a nail module', function() {
     var lib, nail, x;
-    nail = nailCore.use(properties);
+    nail = nailCore.use(fields, properties);
     lib = nail.to({
       Person: {
         properties: {
-          name: 'anon'
+          name: {
+            get: function() {
+              return this._name;
+            },
+            set: function(newValue) {
+              return this._name = newValue;
+            }
+          }
+        }
+      }
+    });
+    x = new lib.Person;
+    x.name = 'someone';
+    return x.name.should.equal('someone');
+  });
+  it('can be initialized wih `is`', function() {
+    var lib, nail, x;
+    nail = nailCore.use(fields, properties);
+    lib = nail.to({
+      Person: {
+        properties: {
+          name: {
+            get: function() {
+              return this._name;
+            },
+            set: function(newValue) {
+              return this._name = newValue;
+            },
+            is: 'anon'
+          }
         }
       }
     });
     x = new lib.Person;
     return x.name.should.equal('anon');
   });
-  return describe('supports the generic commands', function() {
+  it('can create multiple properties', function() {
     var lib, nail, x;
     nail = nailCore.use(properties);
     lib = nail.to({
       Person: {
         properties: {
-          name: 'anon'
+          firstName: {
+            get: function() {
+              return this._firstName;
+            },
+            set: function(newValue) {
+              return this._firstName = newValue;
+            }
+          },
+          lastName: {
+            get: function() {
+              return this._lastName;
+            },
+            set: function(newValue) {
+              return this._lastName = newValue;
+            }
+          }
         }
       }
     });
     x = new lib.Person;
-    it('GEN:set', function() {
-      x['GEN:set']('name', 'whatever');
-      return x.name.should.equal('whatever');
+    x.firstName = 'someone';
+    x.lastName = 'else';
+    x.firstName.should.equal('someone');
+    x.lastName.should.equal('else');
+    return console.log(x);
+  });
+  return it('can be used with multiple instances', function() {
+    var lib, nail, x, y;
+    nail = nailCore.use(fields, properties);
+    lib = nail.to({
+      Person: {
+        properties: {
+          name: {
+            get: function() {
+              return this._name;
+            },
+            set: function(newValue) {
+              return this._name = newValue;
+            }
+          }
+        }
+      }
     });
-    return it('GEN:get', function() {
-      x.name = 'blub';
-      return x['GEN:get']('name').should.equal('blub');
-    });
+    x = new lib.Person;
+    y = new lib.Person;
+    x.name = 'someone';
+    y.name = 'thisone';
+    x.name.should.equal('someone');
+    return y.name.should.equal('thisone');
   });
 });

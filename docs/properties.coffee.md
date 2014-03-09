@@ -12,6 +12,7 @@
 
 [About]: About.coffee.md
 [accessor]: accessor.coffee.md
+[fields]: fields.coffee.md
 [init]: init.coffee.md
 [injector]: injector.coffee.md
 [methods]: methods.coffee.md
@@ -29,6 +30,7 @@ Definitions
     should      = require 'should'
     nailCore    = require 'nail-core'
     properties  = require('../coverage/instrument/lib/module.js').properties
+    fields      = require('../coverage/instrument/lib/module.js').fields
     _           = require 'underscore'
     they        = it #more natural language for describing array properties
 
@@ -43,12 +45,12 @@ The "aspect" properties defines which section of the class definition the module
 
       it 'has a "aspect" string"', ->
         properties.aspect.should.be.a 'string'
-      
+
       it 'its aspect is "properties"', ->
         properties.aspect.should.equal 'properties'
-        
-This aspect is optional.      
-      
+
+This aspect is optional.
+
       it 'does not crash if the class has no properties', ->
         Person = ->
         Person.definition = {}
@@ -59,45 +61,82 @@ The augment function exists...
       it 'has a "augment" function', ->
         (_.isFunction properties.augment).should.be.ok
 
-...and adds properties to the prototype.
+...and adds properties.
 
       it 'adds a property to a class prototype', ->
         Person = ->
         Person.definition =
           properties:
-            name: 'anon'
-            
+            name:
+              get: -> @_name
+              set: (newValue) -> @_name = newValue
         properties.augment Person
         x = new Person
-        x.name.should.equal 'anon'
+        x.name = 'sam'
+        x.name.should.equal 'sam'
 
 The module can be used as a nail module.
 
       it 'can be used as a nail module', ->
-        nail = nailCore.use properties
+        nail = nailCore.use fields, properties
         lib = nail.to Person:
           properties:
-            name: 'anon'
-          
+            name:
+              get: -> @_name
+              set: (newValue) -> @_name = newValue
+
+        x = new lib.Person
+        x.name = 'someone'
+        x.name.should.equal 'someone'
+
+Properties can be initialized wih `is`.
+
+      it 'can be initialized wih `is`', ->
+        nail = nailCore.use fields, properties
+        lib = nail.to Person:
+          properties:
+            name:
+              get: -> @_name
+              set: (newValue) -> @_name = newValue
+              is:  'anon'
+
         x = new lib.Person
         x.name.should.equal 'anon'
-            
-And supports generic commands.
 
-      describe 'supports the generic commands', ->
+More than one property can be defined.
+
+      it 'can create multiple properties', ->
         nail = nailCore.use properties
+
         lib = nail.to Person:
           properties:
-            name: 'anon'
-          
+            firstName:
+              get: -> @_firstName
+              set: (newValue) -> @_firstName = newValue
+            lastName:
+              get: -> @_lastName
+              set: (newValue) -> @_lastName = newValue
+
         x = new lib.Person
-        
-        it 'GEN:set', ->
-          x['GEN:set'] 'name', 'whatever'
-          x.name.should.equal 'whatever'
-          
-        it 'GEN:get', ->
-          x.name = 'blub'
-          x['GEN:get']('name').should.equal 'blub'
-      
-          
+        x.firstName = 'someone'
+        x.lastName  = 'else'
+        x.firstName.should.equal 'someone'
+        x.lastName.should.equal  'else'
+        console.log x
+
+Values are stored per instance.
+
+      it 'can be used with multiple instances', ->
+        nail = nailCore.use fields, properties
+        lib = nail.to Person:
+          properties:
+            name:
+              get: -> @_name
+              set: (newValue) -> @_name = newValue
+
+        x = new lib.Person
+        y = new lib.Person
+        x.name = 'someone'
+        y.name = 'thisone'
+        x.name.should.equal 'someone'
+        y.name.should.equal 'thisone'

@@ -12,7 +12,7 @@
 
 [About]: About.coffee.md
 [accessor]: accessor.coffee.md
-[fields]: fields.coffee.md
+[field]: field.coffee.md
 [init]: init.coffee.md
 [injector]: injector.coffee.md
 [methods]: methods.coffee.md
@@ -22,63 +22,63 @@
 [nail]: https://github.com/noptic/nail
 [npm]: https://github.com/noptic/nail
 
-methods
-=======
+properties
+==========
 Definitions
 -----------
 
     should      = require 'should'
     nailCore    = require 'nail-core'
-    methods     = require('../coverage/instrument/lib/module.js').methods
+    fields      = require('../coverage/instrument/lib/module.js').fields
     _           = require 'underscore'
     they        = it #more natural language for describing array properties
 
 Description
 -----------
 
-    describe 'methods', ->
+    describe 'fields', ->
       it 'is an Object', ->
-        (_.isObject methods).should.be.ok
+        (_.isObject fields).should.be.ok
 
-The "aspect" properties defines which section of the class definition the module handles.
+The "aspect" defines which section of the class definition the module handles.
 
       it 'has a "aspect" string"', ->
-        methods.aspect.should.be.a 'string'
-      
-      it 'its aspect is "methods"', ->
-        methods.aspect.should.equal 'methods'
-        
-This aspect is optional.      
-      
-      it 'does not crash if the class has no methods', ->
+        fields.aspect.should.be.a 'string'
+
+      it 'its aspect is "fields"', ->
+        fields.aspect.should.equal 'fields'
+
+This aspect is optional.
+
+      it 'does not crash if the class has no fields', ->
         Person = ->
         Person.definition = {}
-        methods.augment Person
+        fields.augment Person
 
 The augment function exists...
 
       it 'has a "augment" function', ->
-        (_.isFunction methods.augment).should.be.ok
+        (_.isFunction fields.augment).should.be.ok
 
-...and adds methods to the prototype.
+...and adds fields to the prototype.
 
-      it 'adds a method to a class prototype', ->
+      it 'adds a field to a class prototype', ->
         Person = ->
         Person.definition =
-          methods:
-            hello: -> 'hello world'
-            
-        methods.augment Person
+          fields:
+            name: 'anon'
+
+        fields.augment Person
         x = new Person
-        x.hello().should.equal 'hello world'
+        x.name.should.equal 'anon'
 
 The module can be used as a nail module.
 
       it 'can be used as a nail module', ->
-        nail = nailCore.use methods
+        nail = nailCore.use fields
         lib = nail.to Person:
-          methods:
-            hello: -> 'hello world'
-          
+          fields:
+            name: 'anon'
+
         x = new lib.Person
-        x.hello().should.equal 'hello world'
+        x.name.should.equal 'anon'
