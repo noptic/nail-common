@@ -17,7 +17,8 @@ Description
       it 'is an Object', ->
         (_.isObject properties).should.be.ok
 
-The "aspect" properties defines which section of the class definition the module handles.
+The "aspect" field defines which section of the class definition
+the module handles.
 
       it 'has a "aspect" string"', ->
         properties.aspect.should.be.a 'string'
@@ -116,3 +117,35 @@ Values are stored per instance.
         y.name = 'thisone'
         x.name.should.equal 'someone'
         y.name.should.equal 'thisone'
+
+Initializing a property with a function creates readonly property
+
+      it 'can be used as a nail module', ->
+        nail = nailCore.use fields, properties
+        lib = nail.to Rectangle:
+          fields:
+            length: 0
+            height: 0
+          properties:
+            area: ->@length * @heigth
+
+        x = new lib.Rectangle
+        x.length = 2
+        x.heigth = 3
+        x.area.should.equal 6
+
+An attemp to set a readonly property throws an error
+
+      it 'throws an error on setting a readonly property', ->
+        nail = nailCore.use fields, properties
+        lib = nail.to Rectangle:
+          fields:
+            length: 0
+            height: 0
+          properties:
+            area: ->@length * @heigth
+
+        x = new lib.Rectangle
+        (-> x.area = 2).should.throw(
+          'Set error: Rectangle.area is a readonly property.'
+        )

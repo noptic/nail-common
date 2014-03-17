@@ -1,10 +1,12 @@
-var nailCore, parent, should, _;
+var module, nailCore, parent, should, _;
 
 should = require('should');
 
 nailCore = require('nail-core');
 
-parent = require('../coverage/instrument/lib/module.js').parent;
+module = require('../coverage/instrument/lib/module.js');
+
+parent = module.parent;
 
 _ = require('underscore');
 
@@ -39,7 +41,7 @@ describe('parent', function() {
     x = new lib.User;
     return (x instanceof parentClass).should.be.ok;
   });
-  return describe('creates a prototype chain', function() {
+  describe('creates a prototype chain', function() {
     it('with a constructor', function() {
       var Person, User, x;
       Person = function() {};
@@ -73,7 +75,155 @@ describe('parent', function() {
       parent.augment(User);
       x = new User;
       (x instanceof nailCore.lib['nail-common.Person']).should.be.ok;
-      return nailCore.lib['nail-common.Person'] = void 0;
+      return delete nailCore.lib['nail-common.Person'];
+    });
+  });
+  return describe('methods', function() {
+    var nail, user;
+    nail = nailCore.use(parent, module.methods);
+    it('are inherited', function() {});
+    nail.to('nail-common', {
+      Person: {
+        methods: {
+          hello: function() {
+            return 'hello world';
+          }
+        }
+      },
+      User: {
+        parent: 'nail-common.Person',
+        methods: {
+          bye: function() {
+            return 'goodbye cruel world';
+          }
+        }
+      }
+    });
+    user = new nail.lib['nail-common.User'];
+    user.hello().should.equal('hello world');
+    user.bye().should.equal('goodbye cruel world');
+    delete nail.lib['nail-common.Person'];
+    delete nail.lib['nail-common.User'];
+    it('can be overriden', function() {
+      var lib;
+      lib = {};
+      nail.to(lib, 'nail-common', {
+        Person: {
+          methods: {
+            hello: function() {
+              return 'hello world';
+            },
+            bye: function() {
+              return 'goodbye cruel world';
+            }
+          }
+        },
+        User: {
+          parent: 'nail-common.Person',
+          methods: {
+            hello: function() {
+              return 'hello user';
+            }
+          }
+        }
+      });
+      user = new lib.User;
+      user.hello().should.equal('hello user');
+      delete nail.lib['nail-common.Person'];
+      return delete nail.lib['nail-common.User'];
+    });
+    it('does not change the parent', function() {
+      var lib, person;
+      nail = nailCore.use(parent, module.methods);
+      lib = {};
+      nail.to(lib, 'nail-common', {
+        Person: {
+          methods: {
+            hello: function() {
+              return 'hello world';
+            },
+            bye: function() {
+              return 'goodbye cruel world';
+            }
+          }
+        },
+        User: {
+          parent: 'nail-common.Person',
+          methods: {
+            hello: function() {
+              return 'hello user';
+            }
+          }
+        }
+      });
+      person = new lib.Person;
+      person.hello().should.equal('hello world');
+      delete nail.lib['nail-common.Person'];
+      return delete nail.lib['nail-common.User'];
+    });
+    it('allows calling the parents implementation', function() {
+      var lib;
+      nail = nailCore.use(parent, module.methods);
+      lib = {};
+      nail.to(lib, 'nail-common', {
+        Person: {
+          methods: {
+            hello: function() {
+              return "hello " + (this.getName());
+            },
+            getName: function() {
+              return 'Person';
+            }
+          }
+        },
+        User: {
+          parent: 'nail-common.Person',
+          methods: {
+            hello: function() {
+              return "" + (this.constructor.prototype.hello.apply(this)) + "!!!";
+            },
+            getName: function() {
+              return 'User';
+            }
+          }
+        }
+      });
+      user = new lib.User;
+      user.hello().should.equal('hello User!!!');
+      delete nail.lib['nail-common.Person'];
+      return delete nail.lib['nail-common.User'];
+    });
+    return it('can use a specific implementation', function() {
+      var lib;
+      nail = nailCore.use(parent, module.methods);
+      lib = {};
+      nail.to(lib, 'nail-common', {
+        Person: {
+          methods: {
+            hello: function() {
+              return "hello " + (this.constructor.definition.methods.getName.apply(this));
+            },
+            getName: function() {
+              return 'Person';
+            }
+          }
+        },
+        User: {
+          parent: 'nail-common.Person',
+          methods: {
+            hello: function() {
+              return "" + (this.constructor.prototype.hello()) + "!!!";
+            },
+            getName: function() {
+              return 'User';
+            }
+          }
+        }
+      });
+      user = new lib.User;
+      user.hello().should.equal('hello Person!!!');
+      delete nail.lib['nail-common.Person'];
+      return delete nail.lib['nail-common.User'];
     });
   });
 });

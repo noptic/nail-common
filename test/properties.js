@@ -125,7 +125,7 @@ describe('properties', function() {
     x.lastName.should.equal('else');
     return console.log(x);
   });
-  return it('can be used with multiple instances', function() {
+  it('can be used with multiple instances', function() {
     var lib, nail, x, y;
     nail = nailCore.use(fields, properties);
     lib = nail.to({
@@ -148,5 +148,47 @@ describe('properties', function() {
     y.name = 'thisone';
     x.name.should.equal('someone');
     return y.name.should.equal('thisone');
+  });
+  it('can be used as a nail module', function() {
+    var lib, nail, x;
+    nail = nailCore.use(fields, properties);
+    lib = nail.to({
+      Rectangle: {
+        fields: {
+          length: 0,
+          height: 0
+        },
+        properties: {
+          area: function() {
+            return this.length * this.heigth;
+          }
+        }
+      }
+    });
+    x = new lib.Rectangle;
+    x.length = 2;
+    x.heigth = 3;
+    return x.area.should.equal(6);
+  });
+  return it('throws an error on setting a readonly property', function() {
+    var lib, nail, x;
+    nail = nailCore.use(fields, properties);
+    lib = nail.to({
+      Rectangle: {
+        fields: {
+          length: 0,
+          height: 0
+        },
+        properties: {
+          area: function() {
+            return this.length * this.heigth;
+          }
+        }
+      }
+    });
+    x = new lib.Rectangle;
+    return (function() {
+      return x.area = 2;
+    }).should["throw"]('Set error: Rectangle.area is a readonly property.');
   });
 });
